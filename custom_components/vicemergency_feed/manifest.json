@@ -1,0 +1,7 @@
+{
+  "domain": "vicemergency_feed",
+  "name": "VIC Emergency Incidents",
+  "documentation": "https://github.com/kuchel77/",
+  "requirements": ["aio_geojson_vicemergency_incidents==0.3"],
+  "codeowners": ["@kuchel77"]
+}
