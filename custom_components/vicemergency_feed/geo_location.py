@@ -293,6 +293,8 @@ class VICEmergencyLocationEvent(GeolocationEvent):
             return "mdi:tree"
         if self._category1 == "Flooding":
             return "mdi:house-flood"
+        if self._status == "Warning":
+            return "mdi:alert"
         return "mdi:alarm-light"
 
     @property
