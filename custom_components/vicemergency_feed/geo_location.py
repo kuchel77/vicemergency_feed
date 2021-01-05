@@ -92,9 +92,10 @@ async def async_setup_platform(
     radius_in_km = config[CONF_RADIUS]
     inc_categories = config.get(CONF_INC_CATEGORIES)
     exc_categories = config.get(CONF_EXC_CATEGORIES)
+    statewide = config.get(CONF_STATEWIDE)
     # Initialize the entity manager.
     manager = VICEmergencyFeedEntityManager(
-        hass, async_add_entities, scan_interval, coordinates, radius_in_km, inc_categories, exc_categories
+        hass, async_add_entities, scan_interval, coordinates, radius_in_km, inc_categories, exc_categories, statewide
     )
 
     async def start_feed_manager(event):
@@ -122,6 +123,7 @@ class VICEmergencyFeedEntityManager:
         radius_in_km,
         inc_categories,
         exc_categories,
+        statewide,
     ):
         """Initialize the Feed Entity Manager."""
         self._hass = hass
@@ -135,6 +137,7 @@ class VICEmergencyFeedEntityManager:
             filter_radius=radius_in_km,
             filter_inc_categories=inc_categories,
             filter_exc_categories=exc_categories,
+            filter_statewide=statewide, 
         )
         self._async_add_entities = async_add_entities
         self._scan_interval = scan_interval
@@ -344,7 +347,6 @@ class VICEmergencyLocationEvent(GeolocationEvent):
             (ATTR_RESOURCES, self._resources),
             (ATTR_SIZE, self._size),
             (ATTR_SIZE_FMT, self._sizefmt),
-            (ATTR_LOCATION, self._location),
             (ATTR_STATUS, self._status),
             (ATTR_STATEWIDE,self._statewide),
             (ATTR_TYPE, self._type), 
