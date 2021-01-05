@@ -47,6 +47,7 @@ ATTR_TEXT = "text"
 ATTR_STATUS = "status"
 ATTR_TYPE = "type"
 ATTR_STATEWIDE = "statewide"
+ATTR_WEBBODY = "webbody"
 
 CONF_INC_CATEGORIES = "include_categories"
 CONF_EXC_CATEGORIES = "exclude_categories"
@@ -215,6 +216,7 @@ class VICEmergencyLocationEvent(GeolocationEvent):
         self._type = None
         self._statewide = None
         self._description = None
+        self._webbody = None
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
@@ -278,6 +280,7 @@ class VICEmergencyLocationEvent(GeolocationEvent):
         self._type = feed_entry.type
         self._statewide = feed_entry.statewide
         self._description = feed_entry.description
+        self._webbody = feed_entry.webbody
 
     @property
     def icon(self):
@@ -296,8 +299,12 @@ class VICEmergencyLocationEvent(GeolocationEvent):
             return "mdi:tree"
         if self._category1 == "Flooding":
             return "mdi:house-flood"
+        if self._category1 == "Community Announcement":
+            return "mdi:bullhorn"
         if self._status == "Warning":
             return "mdi:alert"
+        if self._category1 == "Hazardous Maerial":    
+            return "mdi:chemical-weapon"
         return "mdi:alarm-light"
 
     @property
@@ -351,6 +358,7 @@ class VICEmergencyLocationEvent(GeolocationEvent):
             (ATTR_STATEWIDE,self._statewide),
             (ATTR_TYPE, self._type), 
             (ATTR_DESCRIPTION, self._description),
+            (ATTR_WEBBODY, self._webbody),
         ):
             if value or isinstance(value, bool):
                 attributes[key] = value
