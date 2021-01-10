@@ -270,7 +270,6 @@ class VICEmergencyLocationEvent(GeolocationEvent):
         self._category1 = feed_entry.category1
         self._category2 = feed_entry.category2
         self._description = feed_entry.description
-        self._external_id = feed_entry.etsa_id
         self._sourceOrg = feed_entry.source_organisation
         self._resources = feed_entry.resources
         self._size = feed_entry.size
