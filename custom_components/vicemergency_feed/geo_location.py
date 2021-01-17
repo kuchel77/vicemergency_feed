@@ -47,7 +47,8 @@ ATTR_TEXT = "text"
 ATTR_STATUS = "status"
 ATTR_TYPE = "type"
 ATTR_STATEWIDE = "statewide"
-ATTR_WEBBODY = "webbody"
+ATTR_ADVICE_HTML = "advice_html"
+ATTR_ADVICE_MARKDOWN  = "advice_markdown"
 
 CONF_INC_CATEGORIES = "include_categories"
 CONF_EXC_CATEGORIES = "exclude_categories"
@@ -217,6 +218,8 @@ class VICEmergencyLocationEvent(GeolocationEvent):
         self._statewide = None
         self._description = None
         self._webbody = None
+        self._advice_html = None
+        self._advice_markdown = None
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
@@ -279,7 +282,9 @@ class VICEmergencyLocationEvent(GeolocationEvent):
         self._type = feed_entry.type
         self._statewide = feed_entry.statewide
         self._description = feed_entry.description
-        self._webbody = feed_entry.webbody
+        self._advice_html = feed_entry.advice_html
+        self._advice_markdown = feed_entry.advice_markdown
+
 
     @property
     def icon(self):
@@ -357,7 +362,9 @@ class VICEmergencyLocationEvent(GeolocationEvent):
             (ATTR_STATEWIDE,self._statewide),
             (ATTR_TYPE, self._type), 
             (ATTR_DESCRIPTION, self._description),
-            (ATTR_WEBBODY, self._webbody),
+            (ATTR_ADVICE_HTML, self._advice_html),
+            (ATTR_ADVICE_MARKDOWN, self._advice_markdown),
+
         ):
             if value or isinstance(value, bool):
                 attributes[key] = value
