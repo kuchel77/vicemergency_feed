@@ -14,4 +14,24 @@ geo_location:
     statewide: true
 ```
 
-This 
+## Categories
+
+Each incident has a main category (category1), and a sub-category (category2). Some examples of this are:
+
+* include_categories - This is useful if you would only like certain categories, for instance you are only interested in fires. 
+
+## Statewide filter
+
+At the moment, there is a permanent advice message that covers the entire state and covers the advice for COVID-19. Due to this not changing often, there is an option to remove these statewide advice messages. By setting this to true, you are including the statewide incidents. Setting this to false, will exclude them.
+
+## TODO
+
+* feedType
+
+
+## Source Organisations
+* SES - State Emergency Service
+* FRV - Fire Rescue Victoria (the old Metropolitan Fire Bridge)
+* CFA - Country Fire Authority (fires on private properties)
+* DELWP - Department of Environment, Land, Water and Planning (fires and burn offs in state government land)
+* EMV - Emergency Management Victoria (generally responsible for warning, advice and other information for incidents). Note this may also be related to other incidents.
