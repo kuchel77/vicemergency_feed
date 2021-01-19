@@ -2,9 +2,9 @@
 
 This brings in daa from the VIC Emergency website into Home Assistant as geojson events.
 
-This brings in all events from the VIC Emergency website from a large range of Victorian Government agencies, not all of whom fill in the same data into the feed. 
+This brings in all events from the VIC Emergency website from a large range of Victorian Government agencies, not all of whom fill in the same data into the feed.
 
-## Setup 
+## Setup
 
 ```yaml
 geo_location:
@@ -18,7 +18,7 @@ geo_location:
 
 Each incident has a main category (category1), and a sub-category (category2). Some examples of this are:
 
-* include_categories - This is useful if you would only like certain categories, for instance you are only interested in fires. 
+* include_categories - This is useful if you would only like certain categories, for instance you are only interested in fires.
 
 ## Statewide filter
 
@@ -28,8 +28,8 @@ At the moment, there is a permanent advice message that covers the entire state 
 
 * feedType
 
-
 ## Source Organisations
+
 * SES - State Emergency Service
 * FRV - Fire Rescue Victoria (the old Metropolitan Fire Bridge)
 * CFA - Country Fire Authority (fires on private properties)
