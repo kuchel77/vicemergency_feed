@@ -3,10 +3,9 @@
 from datetime import timedelta
 import logging
 from typing import Optional
-
-from aio_geojson_vicemergency_incidents import VICEmergencyIncidentsFeedManager
 import voluptuous as vol
 
+from aio_geojson_vicemergency_incidents import VICEmergencyIncidentsFeedManager
 from homeassistant.components.geo_location import PLATFORM_SCHEMA, GeolocationEvent
 from homeassistant.const import (
     ATTR_ATTRIBUTION,
@@ -42,13 +41,12 @@ ATTR_RESOURCES = "resources"
 ATTRIBUTION = "VICEmergency"
 ATTR_SIZE = "size"
 ATTR_SIZE_FMT = "sizefmt"
-ATTR_LOCATION = "location"
 ATTR_TEXT = "text"
 ATTR_STATUS = "status"
 ATTR_TYPE = "type"
 ATTR_STATEWIDE = "statewide"
 ATTR_ADVICE_HTML = "advice_html"
-ATTR_ADVICE_MARKDOWN  = "advice_markdown"
+ATTR_ADVICE_MARKDOWN = "advice_markdown"
 
 CONF_INC_CATEGORIES = "include_categories"
 CONF_EXC_CATEGORIES = "exclude_categories"
@@ -81,9 +79,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     }
 )
 
-
 async def async_setup_platform(
-    hass: HomeAssistantType, config: ConfigType, async_add_entities, discovery_info=None
+        hass: HomeAssistantType, config: ConfigType, async_add_entities, discovery_info=None
 ):
     """Set up the VICEmergency Feed platform."""
     scan_interval = config.get(CONF_SCAN_INTERVAL, SCAN_INTERVAL)
@@ -97,7 +94,8 @@ async def async_setup_platform(
     statewide = config.get(CONF_STATEWIDE)
     # Initialize the entity manager.
     manager = VICEmergencyFeedEntityManager(
-        hass, async_add_entities, scan_interval, coordinates, radius_in_km, inc_categories, exc_categories, statewide
+        hass, async_add_entities, scan_interval, coordinates, radius_in_km, \
+        inc_categories, exc_categories, statewide
     )
 
     async def start_feed_manager(event):
@@ -115,17 +113,16 @@ async def async_setup_platform(
 
 class VICEmergencyFeedEntityManager:
     """Feed Entity Manager for VICEmergency Service GeoJSON feed."""
-
     def __init__(
-        self,
-        hass,
-        async_add_entities,
-        scan_interval,
-        coordinates,
-        radius_in_km,
-        inc_categories,
-        exc_categories,
-        statewide,
+            self,
+            hass,
+            async_add_entities,
+            scan_interval,
+            coordinates,
+            radius_in_km,
+            inc_categories,
+            exc_categories,
+            statewide,
     ):
         """Initialize the Feed Entity Manager."""
         self._hass = hass
@@ -139,7 +136,7 @@ class VICEmergencyFeedEntityManager:
             filter_radius=radius_in_km,
             filter_inc_categories=inc_categories,
             filter_exc_categories=exc_categories,
-            filter_statewide=statewide, 
+            filter_statewide=statewide,
         )
         self._async_add_entities = async_add_entities
         self._scan_interval = scan_interval
@@ -207,8 +204,7 @@ class VICEmergencyLocationEvent(GeolocationEvent):
         self._category2 = None
         self._description = None
         self._id = None
-        self._sourceTitle = None
-        self._sourceOrg = None
+        self._source_org = None
         self._resources = None
         self._size = None
         self._sizefmt = None
@@ -220,6 +216,7 @@ class VICEmergencyLocationEvent(GeolocationEvent):
         self._webbody = None
         self._advice_html = None
         self._advice_markdown = None
+        self._publication_date = None
 
     async def async_added_to_hass(self):
         """Call when entity is added to hass."""
@@ -273,7 +270,7 @@ class VICEmergencyLocationEvent(GeolocationEvent):
         self._category1 = feed_entry.category1
         self._category2 = feed_entry.category2
         self._description = feed_entry.description
-        self._sourceOrg = feed_entry.source_organisation
+        self._source_org = feed_entry.source_organisation
         self._resources = feed_entry.resources
         self._size = feed_entry.size
         self._sizefmt = feed_entry.size_fmt
@@ -289,27 +286,28 @@ class VICEmergencyLocationEvent(GeolocationEvent):
     @property
     def icon(self):
         """Return the icon to use in the frontend."""
+        retval = "mdi:alarm-light"
         if self._status == "Safe" or self._status == "Complete":
-            return "mdi:map-marker-check"
+            retval = "mdi:map-marker-check"
         if self._status == "Unknown":
-            return "mdi:map-marker-question"
+            retval = "mdi:map-marker-question"
         if self._category1 == "Rescue" and self._category2 == "Rescue Road Trap":
-            return "mdi:car-emergency"
+            retval = "mdi:car-emergency"
         if self._category1 == "Fire":
             if self._status == "Under Control":
-                return "mdi:fire"
-            return "mdi:fire-alert"
+                retval = "mdi:fire"
+            retval = "mdi:fire-alert"
         if self._category1 == "Tree Down":
-            return "mdi:tree"
+            retval = "mdi:tree"
         if self._category1 == "Flooding":
-            return "mdi:house-flood"
+            retval = "mdi:house-flood"
         if self._category1 == "Community Announcement":
-            return "mdi:bullhorn"
+            retval = "mdi:bullhorn"
         if self._status == "Warning":
-            return "mdi:alert"
-        if self._category1 == "Hazardous Maerial":    
-            return "mdi:chemical-weapon"
-        return "mdi:alarm-light"
+            retval = "mdi:alert"
+        if self._category1 == "Hazardous Maerial":
+            retval = "mdi:chemical-weapon"
+        return retval
 
     @property
     def source(self) -> str:
@@ -346,25 +344,23 @@ class VICEmergencyLocationEvent(GeolocationEvent):
         """Return the device state attributes."""
         attributes = {}
         for key, value in (
-            (ATTR_ID, self._id),
-            (ATTR_LOCATION, self._location),
-            (ATTR_ATTRIBUTION, self._attribution),
-            (ATTR_CATEGORY1, self._category1),
-            (ATTR_CATEGORY2, self._category2),
-            (ATTR_DESCRIPTION, self._description),
-            (ATTR_PUBLICATION_DATE, self._publication_date),
-            (ATTR_SOURCE_TITLE, self._sourceTitle),
-            (ATTR_SOURCE_ORG, self._sourceOrg),
-            (ATTR_RESOURCES, self._resources),
-            (ATTR_SIZE, self._size),
-            (ATTR_SIZE_FMT, self._sizefmt),
-            (ATTR_STATUS, self._status),
-            (ATTR_STATEWIDE,self._statewide),
-            (ATTR_TYPE, self._type), 
-            (ATTR_DESCRIPTION, self._description),
-            (ATTR_ADVICE_HTML, self._advice_html),
-            (ATTR_ADVICE_MARKDOWN, self._advice_markdown),
-
+                (ATTR_ID, self._id),
+                (ATTR_LOCATION, self._location),
+                (ATTR_ATTRIBUTION, self._attribution),
+                (ATTR_CATEGORY1, self._category1),
+                (ATTR_CATEGORY2, self._category2),
+                (ATTR_DESCRIPTION, self._description),
+                (ATTR_PUBLICATION_DATE, self._publication_date),
+                (ATTR_SOURCE_ORG, self._source_org),
+                (ATTR_RESOURCES, self._resources),
+                (ATTR_SIZE, self._size),
+                (ATTR_SIZE_FMT, self._sizefmt),
+                (ATTR_STATUS, self._status),
+                (ATTR_STATEWIDE, self._statewide),
+                (ATTR_TYPE, self._type),
+                (ATTR_DESCRIPTION, self._description),
+                (ATTR_ADVICE_HTML, self._advice_html),
+                (ATTR_ADVICE_MARKDOWN, self._advice_markdown),
         ):
             if value or isinstance(value, bool):
                 attributes[key] = value
