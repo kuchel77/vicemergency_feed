@@ -1,0 +1,6 @@
+{
+    "name": "VIC Emergency Incidents Feed",
+    "country": ["AU"],
+    "render_readme": true,
+    "domains": ["geolocation"]
+}
