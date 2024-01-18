@@ -283,7 +283,6 @@ class VICEmergencyLocationEvent(GeolocationEvent):
         self._description = feed_entry.description
         self._advice_html = feed_entry.advice_html
         self._advice_markdown = feed_entry.advice_markdown
-        self._id = feed_entry.id
 
     @property
     def icon(self):
