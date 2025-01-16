@@ -16,7 +16,7 @@ from homeassistant.const import (
     CONF_SCAN_INTERVAL,
     EVENT_HOMEASSISTANT_START,
     EVENT_HOMEASSISTANT_STOP,
-    LENGTH_KILOMETERS,
+    UnitOfLength
 )
 from homeassistant.core import callback
 from homeassistant.helpers import aiohttp_client, config_validation as cv
@@ -338,7 +338,7 @@ class VICEmergencyLocationEvent(GeolocationEvent):
     @property
     def unit_of_measurement(self):
         """Return the unit of measurement."""
-        return LENGTH_KILOMETERS
+        return UnitOfLength.KILOMETERS
 
     @property
     def extra_state_attributes(self):
