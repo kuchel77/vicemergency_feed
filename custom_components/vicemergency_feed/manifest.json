@@ -4,6 +4,6 @@
   "documentation": "https://github.com/kuchel77/",
   "requirements": ["aio_geojson_vicemergency_incidents==0.7"],
   "codeowners": ["@kuchel77"],
-  "version": "0.3",
+  "version": "0.4",
   "iot_class": "cloud_polling"
 }
